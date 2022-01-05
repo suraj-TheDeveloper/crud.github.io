@@ -40,16 +40,16 @@
                                         <td>{{ $task->edate }}</td>
                                         <td>
                                             @if ($task->status == 1)
-                                                <input type="checkbox" name="status" id="status" checked>
+                                                <input type="checkbox" onclick="update({{ $task->id }}, {{ $task->status }})" name="status" id="status" checked>
                                             @else
-                                                <input type="checkbox" name="status" id="status">
+                                                <input type="checkbox" onclick="update({{ $task->id }}, {{ $task->status }})" name="status" id="status">
                                             @endif
                                         </td>
                                         <td>
                                             <a href="{{ route('display', $task->id) }}"><button class="btn btn-info">Edit</button></a>
                                         </td>
                                         <td>
-                                            <a href=""><button class="btn btn-danger">Delete</button></a>
+                                            <a href="{{ route('delete', $task->id) }}"><button class="btn btn-danger">Delete</button></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -61,4 +61,25 @@
         </div>
     </div>
 </div>
+<script>
+    function update(id, status) {
+        console.log(status);
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: '{{ route("status") }}',
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: 'html',
+            data: {
+                id: id,
+                status: status,
+            },
+            success: function(data) {
+                console.log(data);
+            }
+        });
+    }
+</script>
 @endsection

@@ -4,7 +4,7 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 @foreach ($showtask as $task)
-                    <form action="" method="POST">
+                    <form action="{{ route('update', $task->id) }}" method="POST">
                         @csrf
                         <div class="mt-3 mb-3">
                             <label class="form-label">Task Name</label>
@@ -42,10 +42,14 @@
                                 </span>
                             @enderror
                         </div>
+                        <div class="mt-3 mb-3">
+                            <label class="form-label">Status</label>
+                            <input type="checkbox" class="form-check-input" name="status" value="{{ $task->status }}" id="status" {{ old('status', $task->status) ? 'checked' : '' }}>
+                        </div>
                         <div class="row mb-3 mt-3">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Create Task') }}
+                                    {{ __('Update Task') }}
                                 </button><br>
                                 <a class="btn btn-link" href="{{ route('home') }}">
                                     {{ __('Go to home') }}
@@ -57,4 +61,15 @@
             </div>
         </div>
     </div>
+    <script>
+        const status = document.querySelector("#status");
+        status.addEventListener("click", function(){
+            var complete = document.getElementById("status").value;
+            if(complete == 0) {
+                document.getElementById("status").setAttribute("value", "1");
+            } else {
+                document.getElementById("status").setAttribute("value", "0");
+            }
+        });
+    </script>
 @endsection
